@@ -1,8 +1,13 @@
 module Specjour
   module Cucumber
     module Runner
+
+      def self.cucumber_opts 
+        (ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : []) 
+      end
+
       def self.run(feature, output)
-        cli = ::Cucumber::Cli::Main.new(['--format', 'Specjour::Cucumber::DistributedFormatter', feature], output)
+        cli = ::Cucumber::Cli::Main.new( cucumber_opts + ['--format', 'Specjour::Cucumber::DistributedFormatter', feature], output)
 
         if CUCUMBER_09x
           Cucumber.runtime.instance_variable_set(:@configuration, cli.configuration)
