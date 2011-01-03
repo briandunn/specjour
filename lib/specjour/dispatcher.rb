@@ -44,7 +44,15 @@ module Specjour
     end
 
     def all_features(tests_path = 'features')
-      Dir[File.join(".", tests_path, "**/*.feature")].sort
+      #Dir[File.join(".", tests_path, "**/*.feature")].sort
+      all_features_that_i_would_run
+    end
+
+    def all_features_that_i_would_run
+      require 'specjour/cucumber'
+      output = StringIO.new
+      ::Cucumber::Cli::Main.new(%w[--format Specjour::Cucumber::RunlistFormatter --dry-run ], output).execute!
+      output.string.split.grep(/\.feature(:\d+|)$/).sort
     end
 
     def add_manager(manager)

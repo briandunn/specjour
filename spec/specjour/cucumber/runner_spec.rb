@@ -14,6 +14,10 @@ describe Specjour::Cucumber::Runner do
       it "should also pass those along" do
         mock(::Cucumber::Cli::Main).new(['--tags','~@wip'] + @default_options, @output).stub!.execute! {nil}
       end
+      describe "that specify a format" do
+        before { ENV['CUCUMBER_OPTS'] = "--format pretty" }
+        it "should override the environment format with the specjour formatter" 
+      end
     end
     after do
       Specjour::Cucumber::Runner.run('a.feature',@output)
